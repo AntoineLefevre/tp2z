@@ -9,8 +9,13 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Person;
-use App\Form\PersonType;
+use App\Entity\Material;
+use App\Entity\Inventory;
+use App\Calculate\Inventory as Calcul;
+use App\Form\InventoryType;
+use App\Form\MaterialType;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,27 +31,35 @@ use Symfony\Component\Translation\Tests\StringClass;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class PersonController extends Controller
+class InventoryController extends Controller
 {
 
     /**
-     * @Route("/new",name="new")
+     * @Route("/newInv",name="newInv")
      */
     public function newAction(Request $request)
     {
 
-        $person = new person;
-        $form = $this->createForm(PersonType::class, $person);
+        $inventory = new Inventory();
+        $form = $this->createForm(InventoryType::class, $inventory);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $test = new calcul($em);
+
 
         if($form->isValid() && $form->isSubmitted())
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
-            $em->flush();
-            $this->addFlash('info','User bien enregistré');
+            $test->setPerson($inventory->getPerson());
+            $test->setInventory($inventory);
+            if($test->calcul())
+            {
+                $em->persist($inventory);
+                $em->flush();
+                $this->addFlash('info','Inventaire bien enregistré');
+            }
+
         }
-        return $this->render('Person/new.html.twig', array('form' => $form->createView()));
+        return $this->render('Inventory/new.html.twig', array('form' => $form->createView()));
 
 
         /*
@@ -64,7 +77,7 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/edit",name="edit")
+     * @Route("/editInv",name="editInv")
      */
     public function editAction(Request $request)
     {
@@ -80,19 +93,18 @@ class PersonController extends Controller
             ->getForm();
         */
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Person::class);
-        $person = $repo->find(1);
-        $form = $this->createForm(PersonType::class, $person);
+        $repo = $em->getRepository(Inventory::class);
+        $material=$repo->find(1);
+        $form = $this->createForm(InventoryType::class, $material);
         $form->handleRequest($request);
 
         if($form->isValid() && $form->isSubmitted())
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
+            $em->persist($material);
             $em->flush();
-            $this->addFlash('info','User bien modifié');
+            $this->addFlash('info','Inventaire bien modifié');
         }
-        return $this->render('Person/edit.html.twig', array('form' => $form->createView()));
+        return $this->render('Inventory/edit.html.twig', array('form' => $form->createView()));
 
 
         /*
@@ -110,23 +122,13 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/index",name="index")
+     * @Route("/indexInv",name="indexInv")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Person::class);
-        $user = $repo->findAll();
-        return $this->render('Person/index.html.twig',array('User' => $user));
+        $repo = $em->getRepository(Inventory::class);
+        $inventory = $repo->findAll();
+        return $this->render('Inventory/index.html.twig',array('Inventory' => $inventory));
     }
-
-    /**
-     * @Route("/show/{id}",name="show")
-     */
-    public function showAction(Person $person)
-    {
-        return $this->render('Person/show.html.twig',array('Person' => $person));
-    }
-
-
 }

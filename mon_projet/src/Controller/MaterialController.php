@@ -9,8 +9,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Person;
-use App\Form\PersonType;
+use App\Entity\Material;
+use App\Form\MaterialType;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,27 +26,27 @@ use Symfony\Component\Translation\Tests\StringClass;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class PersonController extends Controller
+class MaterialController extends Controller
 {
 
     /**
-     * @Route("/new",name="new")
+     * @Route("/newMat",name="newMat")
      */
     public function newAction(Request $request)
     {
 
-        $person = new person;
-        $form = $this->createForm(PersonType::class, $person);
+        $material = new material;
+        $form = $this->createForm(MaterialType::class, $material);
         $form->handleRequest($request);
 
         if($form->isValid() && $form->isSubmitted())
         {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
+            $em->persist($material);
             $em->flush();
-            $this->addFlash('info','User bien enregistré');
+            $this->addFlash('info','Material bien enregistré');
         }
-        return $this->render('Person/new.html.twig', array('form' => $form->createView()));
+        return $this->render('Material/new.html.twig', array('form' => $form->createView()));
 
 
         /*
@@ -64,7 +64,7 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/edit",name="edit")
+     * @Route("/editMat",name="editMat")
      */
     public function editAction(Request $request)
     {
@@ -80,19 +80,19 @@ class PersonController extends Controller
             ->getForm();
         */
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Person::class);
-        $person = $repo->find(1);
-        $form = $this->createForm(PersonType::class, $person);
+        $repo = $em->getRepository(Material::class);
+        $material=$repo->find(1);
+        $form = $this->createForm(MaterialType::class, $material);
         $form->handleRequest($request);
 
         if($form->isValid() && $form->isSubmitted())
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
+
+            $em->persist($material);
             $em->flush();
-            $this->addFlash('info','User bien modifié');
+            $this->addFlash('info','Material bien modifié');
         }
-        return $this->render('Person/edit.html.twig', array('form' => $form->createView()));
+        return $this->render('Material/edit.html.twig', array('form' => $form->createView()));
 
 
         /*
@@ -110,23 +110,13 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/index",name="index")
+     * @Route("/indexMat",name="indexMat")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Person::class);
-        $user = $repo->findAll();
-        return $this->render('Person/index.html.twig',array('User' => $user));
+        $repo = $em->getRepository(Material::class);
+        $material = $repo->findAll();
+        return $this->render('Material/index.html.twig',array('Material' => $material));
     }
-
-    /**
-     * @Route("/show/{id}",name="show")
-     */
-    public function showAction(Person $person)
-    {
-        return $this->render('Person/show.html.twig',array('Person' => $person));
-    }
-
-
 }

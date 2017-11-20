@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: antoine.lefevre
- * Date: 13/11/17
- * Time: 14:08
+ * Date: 20/11/17
+ * Time: 13:20
  */
 
 namespace App\Entity;
@@ -17,7 +16,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
  * @ORM\Table
  * @ORM\Entity
  */
-class Person
+class Material
 {
 
     /**
@@ -35,20 +34,14 @@ class Person
     protected $name;
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(name="max_weight",type="integer")
+     * @ORM\Column(name="weight",type="float")
      */
-    protected $max_weight;
+    protected $weight;
 
     /**
-     *
-     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="person")
-     */
-    protected $inventories;
-
-    /**
-     * Person constructor.
+     * Material constructor.
      */
     public function __construct()
     {
@@ -87,40 +80,24 @@ class Person
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getMaxWeight()
+    public function getWeight()
     {
-        return $this->max_weight;
+        return $this->weight;
     }
 
     /**
-     * @param int $max_weight
+     * @param float $weight
      */
-    public function setMaxWeight($max_weight)
+    public function setWeight($weight)
     {
-        $this->max_weight = $max_weight;
+        $this->weight = $weight;
     }
 
     function __toString()
     {
         return $this->name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getInventories()
-    {
-        return $this->inventories;
-    }
-
-    /**
-     * @param mixed $inventories
-     */
-    public function setInventories($inventories)
-    {
-        $this->inventories = $inventories;
     }
 
 

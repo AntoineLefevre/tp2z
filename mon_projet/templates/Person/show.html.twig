@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+        <p>Id: {{ Person.id }} Person: {{ Person.name }}</p>
+        <p>Inventaire :</p>
+{%  for item in Person.inventories %}
+     {{ item.material.name }}
+     {{ item.numberOfItem }}
+{% endfor %}
+{% endblock %}

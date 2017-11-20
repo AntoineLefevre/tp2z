@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Form;
-use App\Entity\Person;
+use App\Entity\Inventory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -12,18 +12,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class PersonType extends AbstractType
+class InventoryType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class' => Person::class));
+        $resolver->setDefaults(array('data_class' => Inventory::class));
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('max_weight', NumberType::class)
+            ->add('person')
+            ->add('material')
+            ->add('numberOfItem', NumberType::class)
             ->add('save', SubmitType::class, array('label' =>"créer"))
             ->getForm();
     }

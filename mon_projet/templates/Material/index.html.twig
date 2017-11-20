@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for unMat in Material %}
+        <p>Id: {{ unMat.id }} Name: {{ unMat.name }} Weight: {{ unMat.weight }} </p>
+    {% endfor %}
+{% endblock %}

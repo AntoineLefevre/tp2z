@@ -2,6 +2,6 @@
 
 {% block body %}
     {% for unUser in User %}
-    <p>Id: {{ unUser.id }} Name: {{ unUser.name }} Age: {{ unUser.age }} Visible: {{ unUser.visible }} Color: {{ unUser.color }} CreatedAt: {{ unUser.createdAt|date('d-m-Y H:i:s') }}</p>
+    <p>Id: {{ unUser.id }} Name: {{ unUser.name }} Max_Weight: {{ unUser.maxWeight }} </p>
         {% endfor %}
 {% endblock %}
