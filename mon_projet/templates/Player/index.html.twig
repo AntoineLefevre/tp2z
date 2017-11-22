@@ -1,0 +1,31 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!--<a href="{#{{ path('player_new') }}#}">Create player</a> -->
+
+    <table>
+        <thead>
+        <th>Status</th>
+        <th>Name</th>
+        <th>HP</th>
+        <th>Weapon</th>
+        <th>Damage</th>
+        <th>Coef</th>
+        <th>Fire rate</th>
+        </thead>
+        <tbody>
+        {% for player in players %}
+            <tr>
+                <td>{{ player.healthPoint < 0 ? 'DEAD' : 'Alive' }}</td>
+                <td>{{ player.name }}</td>
+                <td>{{ player.healthPoint }}</td>
+                <td>{{ player.currentWeapon.name }}</td>
+                <td>{{ player.currentWeapon.damage }}</td>
+                <td>{{ player.currentWeapon.damageDistanceCoef }}</td>
+                <td>{{ player.currentWeapon.fireRate }}/s</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

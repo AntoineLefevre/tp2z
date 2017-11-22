@@ -1,7 +1,0 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    {% for unInv in Inventory %}
-        <p>Id: {{ unInv.id }} Person: {{ unInv.person.name }} Material: {{ unInv.material.name }} Nombre : {{ unInv.numberOfItem }}</p>
-    {% endfor %}
-{% endblock %}
