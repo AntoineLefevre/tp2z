@@ -10,8 +10,9 @@ namespace App\Calculate;
 
 use Doctrine\ORM\EntityManager;
 use App\Entity\Person;
+use Doctrine\ORM\EntityManagerInterface;
 
-class Inventory
+class Calcul
 {
     private $entityManager;
 
@@ -22,7 +23,7 @@ class Inventory
      * Inventory constructor.
      * @param $entityManager
      */
-    public function __construct(\Doctrine\ORM\EntityManager $entityManager)
+    public function __construct(\Doctrine\ORM\EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }

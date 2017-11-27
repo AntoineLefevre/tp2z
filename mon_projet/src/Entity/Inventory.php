@@ -46,9 +46,10 @@ class Inventory
      */
     protected $numberOfItem;
 
-    public function __contsruct()
+    public function __contsruct(\Doctrine\ORM\EntityManagerInterface $em)
     {
         $this->inventories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->em = $em;
     }
 
     /**

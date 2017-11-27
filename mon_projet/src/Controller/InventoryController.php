@@ -11,9 +11,9 @@ namespace App\Controller;
 
 
 use App\Entity\Person;
+use App\Calculate\Calcul;
 use App\Entity\Material;
 use App\Entity\Inventory;
-use App\Calculate\Inventory as Calcul;
 use App\Form\InventoryType;
 use App\Form\MaterialType;
 use Doctrine\DBAL\Types\StringType;
@@ -40,18 +40,19 @@ class InventoryController extends Controller
     public function newAction(Request $request)
     {
 
-        $inventory = new Inventory();
+        $inventory = $this->get(\App\Entity\Inventory::class);
         $form = $this->createForm(InventoryType::class, $inventory);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        $test = new calcul($em);
+
 
 
         if($form->isValid() && $form->isSubmitted())
         {
-            $test->setPerson($inventory->getPerson());
-            $test->setInventory($inventory);
-            if($test->calcul())
+            $calcul= $this->get(\App\Calculate\Calcul::class);
+            $calcul->setPerson($inventory->getPerson());
+            $calcul->setInventory($inventory);
+            if($calcul->calcul())
             {
                 $em->persist($inventory);
                 $em->flush();
