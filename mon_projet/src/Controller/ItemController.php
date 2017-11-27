@@ -9,8 +9,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Item;
 use App\Entity\Person;
-use App\Form\PersonType;
+use App\Form\ItemType;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,11 +27,11 @@ use Symfony\Component\Translation\Tests\StringClass;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class PersonController extends Controller
+class ItemController extends Controller
 {
 
     /**
-     * @Route("/new",name="new")
+     * @Route("/newItem",name="newItem")
      */
     public function newAction(Request $request)
     {
@@ -45,18 +46,18 @@ class PersonController extends Controller
             ->add('save', SubmitType::class, array('label' => "créer"))
             ->getForm();
         */
-        $person = $this->get(\App\Entity\Person::class);
-        $form = $this->createForm(PersonType::class, $person);
+        $item = $this->get(\App\Entity\Item::class);
+        $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
 
         if($form->isValid() && $form->isSubmitted())
         {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
+            $em->persist($item);
             $em->flush();
-            $this->addFlash('info','user bien enregistré');
+            $this->addFlash('info','item bien enregistré');
         }
-        return $this->render('Person/new.html.twig', array('form' => $form->createView()));
+        return $this->render('Item/new.html.twig', array('form' => $form->createView()));
 
 
         /*
@@ -70,25 +71,18 @@ class PersonController extends Controller
         $em->persist($person);
         $em->flush();*/
 
-
     }
 
     /**
-     * @Route("/index",name="index")
+     * @Route("/indexItem",name="indexItem")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Person::class);
-        $user = $repo->findAll();
-        return $this->render('Person/index.html.twig',array('User' => $user));
+        $repo = $em->getRepository(Item::class);
+        $item = $repo->findAll();
+        return $this->render('Item/index.html.twig',array('Item' => $item));
     }
 
-    /**
-     * @Route("/show/{id}",name="show")
-     */
-    public function showAction(Person $player)
-    {
-        return $this->render('Person/show.html.twig',array('Person' => $player));
-    }
+
 }

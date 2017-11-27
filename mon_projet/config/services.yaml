@@ -2,6 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    my_parameter: '%env(NB_SLOT_MAX)%'
 
 services:
     # default configuration for services in *this* file
@@ -27,3 +28,13 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+    App\Entity\Person:
+        public: true
+    App\Entity\Item:
+        public: true
+    App\Entity\PlayerItem:
+        public: true
+    App\Form\PlayerItemType:
+        arguments: ['%my_parameter%']
+        public: true
+        autowire: false

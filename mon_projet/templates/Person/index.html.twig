@@ -2,6 +2,6 @@
 
 {% block body %}
     {% for unUser in User %}
-    <p>Id: {{ unUser.id }} Name: {{ unUser.name }} Age: {{ unUser.age }} Visible: {{ unUser.visible }} Color: {{ unUser.color }} CreatedAt: {{ unUser.createdAt|date('d-m-Y H:i:s') }}</p>
+   <a href="{{ path('show', {'id' : unUser.id }) }}">{{ unUser.id }} {{ unUser.name }}</a>
         {% endfor %}
 {% endblock %}
