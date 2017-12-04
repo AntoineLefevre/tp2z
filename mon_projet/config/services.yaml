@@ -27,3 +27,12 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Entity\Person:
+        public: true
+    App\Subscriber\PlayerSubscriber:
+        arguments: [ '@doctrine.orm.entity_manager']
+
+    App\Event\PlayerEvent:
+        public: true
+

@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Entity\Person;
 use App\Form\PersonType;
 use Doctrine\DBAL\Types\StringType;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,7 +26,11 @@ use Doctrine\ORM\Persisters\Entity;
 use Symfony\Component\Translation\Tests\StringClass;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
+use App\AppEvent;
 
+/**
+ * @Route(path="/person")
+ */
 class PersonController extends Controller
 {
 
@@ -34,42 +39,20 @@ class PersonController extends Controller
      */
     public function newAction(Request $request)
     {
-        /*
-        $person = new person;
-        $form = $this->createFormBuilder($person)
-            ->add('name', TextType::class)
-            ->add('color', TextType::class)
-            ->add('age', NumberType::class)
-            ->add('createdAt', DateType::class)
-            ->add('visible', CheckboxType::class)
-            ->add('save', SubmitType::class, array('label' => "créer"))
-            ->getForm();
-        */
-        $person = new person;
-        $form = $this->createForm(PersonType::class, $person);
+        $player = $this->get(\App\Entity\Person::class);
+        $form=$this->createForm(PersonType::class, $player);
         $form->handleRequest($request);
 
-        if($form->isValid() && $form->isSubmitted())
-        {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
-            $em->flush();
-            $this->addFlash('info','user bien enregistré');
+        if($form->isValid() && $form->isSubmitted()) {
+            $playerEvent = $this->get(\App\Event\PlayerEvent::class);
+            $playerEvent->setPlayer($player);
+            $dispatcher = $this->get('event_dispatcher');
+
+            $dispatcher->dispatch(AppEvent::PLAYER_ADD, $playerEvent);
+
         }
+
         return $this->render('Person/new.html.twig', array('form' => $form->createView()));
-
-
-        /*
-        $em = $this->getDoctrine()->getManager();
-        $person = new Person();
-        $person->setName('Antoine');
-        $person->setAge(10);
-        $person->setVisible(true);
-        $person->setCreatedAt(new \DateTime('now'));
-        $person->setColor('green');
-        $em->persist($person);
-        $em->flush();*/
-
 
     }
 
@@ -78,41 +61,23 @@ class PersonController extends Controller
      */
     public function editAction(Request $request)
     {
-        /*
-        $person = new person;
-        $form = $this->createFormBuilder($person)
-            ->add('name', TextType::class)
-            ->add('color', TextType::class)
-            ->add('age', NumberType::class)
-            ->add('createdAt', DateType::class)
-            ->add('visible', CheckboxType::class)
-            ->add('save', SubmitType::class, array('label' => "créer"))
-            ->getForm();
-        */
-        $person = new person;
-        $form = $this->createForm(PersonType::class, $person);
+
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Person::class);
+        $player = $repo->find(1);
+        $form=$this->createForm(PersonType::class, $player);
         $form->handleRequest($request);
 
-        if($form->isValid() && $form->isSubmitted())
-        {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
-            $em->flush();
-            $this->addFlash('info','user bien modifié');
+        if($form->isValid() && $form->isSubmitted()) {
+            $playerEvent = $this->get(\App\Event\PlayerEvent::class);
+
+            $dispatcher = $this->get('event_dispatcher');
+
+            $dispatcher->dispatch(AppEvent::PLAYER_EDIT, $playerEvent);
+
         }
-        return $this->render('Person/edit.html.twig.twig', array('form' => $form->createView()));
 
-
-        /*
-        $em = $this->getDoctrine()->getManager();
-        $person = new Person();
-        $person->setName('Antoine');
-        $person->setAge(10);
-        $person->setVisible(true);
-        $person->setCreatedAt(new \DateTime('now'));
-        $person->setColor('green');
-        $em->persist($person);
-        $em->flush();*/
+        return $this->render('Person/edit.html.twig', array('form' => $form->createView()));
 
 
     }

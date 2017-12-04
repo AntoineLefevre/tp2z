@@ -9,6 +9,8 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -16,6 +18,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
  * Class Person
  * @ORM\Table
  * @ORM\Entity
+ * @UniqueEntity(fields="name", message="Déjà utilisé")
  */
 class Person
 {
@@ -28,47 +31,45 @@ class Person
      */
     protected $id;
 
+
     /**
-     * @var string
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(name="name",type="string")
      */
     protected $name;
 
     /**
-     * @var integer
-     * @ORM\Column(name="age", type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Choice({"ADC" , "JUNG", "TOP", "MID", "SUP"}, message="Veuillez saisir ADC, JUNG, TOP, MID ou SUP")
+     * @ORM\Column(name="roles", type="string")
      */
-    protected $age;
+    protected $roles;
 
     /**
-     * @var boolean
-     * @ORM\Column(name="visible", type="boolean")
+     * @ORM\Column(name="money", type="integer")
      */
-    protected $visible;
+    protected $money=0;
 
     /**
-     * @var \DateTime
+     * @ORM\Column(name="experience", type="integer")
+     */
+    protected $experience=0;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
 
     /**
-     * @var string
-     * @ORM\Column(name="color",type="string")
+     * @ORM\Column(name="updated_at", type="datetime")
      */
-    protected $color;
-
-    /**
-     * Person constructor.
-     */
-    public function __construct()
-    {
-    }
+    protected $updatedAt;
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -76,91 +77,116 @@ class Person
     /**
      * @param int $id
      */
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param mixed $name
      */
-    public function setName(string $name)
+    public function setName($name)
     {
         $this->name = $name;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getAge(): ?int
+    public function getRoles()
     {
-        return $this->age;
+        return $this->roles;
     }
 
     /**
-     * @param int $age
+     * @param mixed $roles
      */
-    public function setAge(int $age)
+    public function setRoles($roles)
     {
-        $this->age = $age;
+        $this->roles = $roles;
     }
 
     /**
-     * @return boolean
+     * @return mixed
      */
-    public function isVisible(): ?bool
+    public function getMoney()
     {
-        return $this->visible;
+        return $this->money;
     }
 
     /**
-     * @param boolean $visible
+     * @param mixed $money
      */
-    public function setVisible(bool $visible)
+    public function setMoney($money)
     {
-        $this->visible = $visible;
+        $this->money = $money;
     }
 
     /**
-     * @return DateTime
+     * @return mixed
      */
-    public function getCreatedAt(): ?\DateTime
+    public function getExperience()
+    {
+        return $this->experience;
+    }
+
+    /**
+     * @param mixed $experience
+     */
+    public function setExperience($experience)
+    {
+        $this->experience = $experience;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
     /**
-     * @param DateTime $createdAt
+     * @param mixed $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getColor(): ?string
+    public function getUpdatedAt()
     {
-        return $this->color;
+        return $this->updatedAt;
     }
 
     /**
-     * @param string $color
+     * @param mixed $updatedAt
      */
-    public function setColor(string $color)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->color = $color;
+        $this->updatedAt = $updatedAt;
     }
 
+    public function addMoney($money)
+    {
+        $this->money += $money;
+    }
+
+    public function addExperience($exp)
+    {
+        $this->experience += $exp;
+    }
 
 
 }
