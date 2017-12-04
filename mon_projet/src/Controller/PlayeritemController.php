@@ -28,11 +28,14 @@ use Symfony\Component\Translation\Tests\StringClass;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
+/**
+ * @Route(path="/playerItem")
+ */
 class PlayeritemController extends Controller
 {
 
     /**
-     * @Route("/newPlayerItem",name="newPlayerItem")
+     * @Route("/new",name="newPlayerItem")
      */
     public function newAction(Request $request)
     {

@@ -10,7 +10,9 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Entity\Player;
 use App\Form\PersonType;
+use App\Form\PlayerType;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,9 +29,9 @@ use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
- * @Route(path="/person")
+ * @Route(path="/player")
  */
-class PersonController extends Controller
+class PlayerController extends Controller
 {
 
     /**
@@ -37,41 +39,42 @@ class PersonController extends Controller
      */
     public function newAction(Request $request)
     {
-        /*
-        $person = new person;
-        $form = $this->createFormBuilder($person)
-            ->add('name', TextType::class)
-            ->add('color', TextType::class)
-            ->add('age', NumberType::class)
-            ->add('createdAt', DateType::class)
-            ->add('visible', CheckboxType::class)
-            ->add('save', SubmitType::class, array('label' => "créer"))
-            ->getForm();
-        */
-        $person = $this->get(\App\Entity\Person::class);
-        $form = $this->createForm(PersonType::class, $person);
+        $player = $this->get(\App\Entity\Player::class);
+        $form = $this->createForm(PlayerType::class, $player);
         $form->handleRequest($request);
 
         if($form->isValid() && $form->isSubmitted())
         {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
+            $em->persist($player);
             $em->flush();
             $this->addFlash('info','user bien enregistré');
         }
-        return $this->render('Person/new.html.twig', array('form' => $form->createView()));
+        return $this->render('Player/new.html.twig', array('form' => $form->createView()));
 
 
-        /*
+    }
+
+    /**
+     * @Route("/edit",name="edit")
+     */
+    public function editAction(Request $request)
+    {
+
         $em = $this->getDoctrine()->getManager();
-        $person = new Person();
-        $person->setName('Antoine');
-        $person->setAge(10);
-        $person->setVisible(true);
-        $person->setCreatedAt(new \DateTime('now'));
-        $person->setColor('green');
-        $em->persist($person);
-        $em->flush();*/
+        $repo = $em->getRepository(Player::class);
+        $player = $repo->find(1);
+        $form = $this->createForm(PlayerType::class, $player);
+        $form->handleRequest($request);
+        if($form->isValid() && $form->isSubmitted())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($player);
+            $em->flush();
+            $this->addFlash('info','User bien modifié');
+        }
+        return $this->render('Player/edit.html.twig', array('form' => $form->createView()));
+
 
 
     }

@@ -27,11 +27,14 @@ use Symfony\Component\Translation\Tests\StringClass;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
+/**
+ * @Route(path="/item")
+ */
 class ItemController extends Controller
 {
 
     /**
-     * @Route("/newItem",name="newItem")
+     * @Route("/new",name="newItem")
      */
     public function newAction(Request $request)
     {
@@ -74,7 +77,7 @@ class ItemController extends Controller
     }
 
     /**
-     * @Route("/indexItem",name="indexItem")
+     * @Route("/index",name="indexItem")
      */
     public function indexAction()
     {

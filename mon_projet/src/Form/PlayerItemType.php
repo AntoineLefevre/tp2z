@@ -37,7 +37,7 @@ class PlayerItemType extends AbstractType
         $data=[];
         for($i=0;$i<$this->nombreMax;$i++)
         {
-            $data[]=[$i=>$i];
+            $data[$i]=$i+1;
         }
         $builder
             ->add('player', null)

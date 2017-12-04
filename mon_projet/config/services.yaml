@@ -38,3 +38,5 @@ services:
         arguments: ['%my_parameter%']
         public: true
         autowire: false
+    App\Entity\Player:
+        public: true

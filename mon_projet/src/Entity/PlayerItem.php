@@ -130,10 +130,6 @@ class PlayerItem
         $this->createdAt = $createdAt;
     }
 
-    function __toString()
-    {
-        return $this->position;
-    }
 
 
 }
